@@ -2,9 +2,17 @@ package section6.just.microservices.currencyexchangeservice;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity //indicating to spring "hey I wanna store objects of this type in a db" 
 public class CurrencyExchange {
+	@Id //indicating this will serve as the primary key aka. the thing used to identify this row
 	private Long id;
+	@Column(name  = "currency_from") //this is necessary because from in SQL is a special keyword and this property will get evaluated as that.... so need to give it different name
 	private String from;
+	@Column(name  = "currency_to") //might as well rename for consistency sake
 	private String to; 
 	private BigDecimal conversionRate;
 	private String environment; 
