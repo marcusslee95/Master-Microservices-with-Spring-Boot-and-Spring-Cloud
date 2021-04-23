@@ -14,11 +14,18 @@ public class CurrencyExchangeController {
 	@Autowired //aka. spring find an instance of this and then assign it to this property
 	private Environment environment; //this will have info about environment this service is in
 	
+	@Autowired
+	private CurrencyExchangeRepository repository; 
+	
 	@GetMapping("/currency-exchange/from/{from}/to/{to}")
 	public CurrencyExchange retrieveExchangeRate(@PathVariable String from, @PathVariable String to) {
-		CurrencyExchange currencyExchange = new CurrencyExchange(10001L, 
-				from, to, BigDecimal.valueOf(65.00));
-//		currencyExchange.setEnvironment("8000");
+//		CurrencyExchange currencyExchange = new CurrencyExchange(10001L, 
+//				from, to, BigDecimal.valueOf(65.00));
+////		currencyExchange.setEnvironment("8000");
+		CurrencyExchange currencyExchange = repository.findByFromAndTo(from, to);
+		if (currencyExchange == null) {
+			throw new RuntimeException("Unable to find data for " + from + " to " + to);
+		}
 		String port = environment.getProperty("local.server.port");
 		currencyExchange.setEnvironment(port);
 		return currencyExchange;
