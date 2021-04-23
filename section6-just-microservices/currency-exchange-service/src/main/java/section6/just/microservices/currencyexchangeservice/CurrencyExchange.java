@@ -7,7 +7,9 @@ public class CurrencyExchange {
 	private String from;
 	private String to; 
 	private BigDecimal conversionRate;
+	private String environment; 
 	
+
 	public CurrencyExchange() { //JPA - which we'll use later - needs a no argument constructor
 		
 	}
@@ -41,6 +43,12 @@ public class CurrencyExchange {
 	}
 	public void setConversionRate(BigDecimal conversionRate) {
 		this.conversionRate = conversionRate;
+	}
+	public String getEnvironment() {
+		return environment;
+	}
+	public void setEnvironment(String environment) {
+		this.environment = environment;
 	}
 	
 	
