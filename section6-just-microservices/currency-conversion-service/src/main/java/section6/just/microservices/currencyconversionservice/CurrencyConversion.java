@@ -6,7 +6,7 @@ public class CurrencyConversion {
 	private Long id;
 	private String from;
 	private String to; 
-	private BigDecimal conversionMultiple; 
+	private BigDecimal conversionRate; 
 	private BigDecimal quantity;
 	private BigDecimal totalCalculatedAmount;
 	private String environment;
@@ -14,13 +14,13 @@ public class CurrencyConversion {
 	public CurrencyConversion() {
 		
 	}
-	public CurrencyConversion(Long id, String from, String to, BigDecimal conversionMultiple, BigDecimal quantity,
+	public CurrencyConversion(Long id, String from, String to, BigDecimal conversionRate, BigDecimal quantity,
 			BigDecimal totalCalculatedAmount, String environment) {
 		super();
 		this.id = id;
 		this.from = from;
 		this.to = to;
-		this.conversionMultiple = conversionMultiple;
+		this.conversionRate = conversionRate;
 		this.quantity = quantity;
 		this.totalCalculatedAmount = totalCalculatedAmount;
 		this.environment = environment;
@@ -43,11 +43,11 @@ public class CurrencyConversion {
 	public void setTo(String to) {
 		this.to = to;
 	}
-	public BigDecimal getConversionMultiple() {
-		return conversionMultiple;
+	public BigDecimal getConversionRate() {
+		return conversionRate;
 	}
-	public void setConversionMultiple(BigDecimal conversionMultiple) {
-		this.conversionMultiple = conversionMultiple;
+	public void setConversionRate(BigDecimal conversionRate) {
+		this.conversionRate = conversionRate;
 	}
 	public BigDecimal getQuantity() {
 		return quantity;
