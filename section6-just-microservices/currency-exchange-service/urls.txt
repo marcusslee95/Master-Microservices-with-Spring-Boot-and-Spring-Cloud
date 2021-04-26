@@ -12,3 +12,16 @@ http://localhost:8100/currency-conversion/from/USD/to/INR/quantity/10
 "from": "USD",
 "to": "INR", "conversionMultiple": 65.00, "quantity": 10, "totalCalculatedAmount": 650.00, "environment": "8000 instance-id"
 }
+
+Naming Server / Service Registry: the thing that knows where every instance of every service is 
+http://localhost:8761
+
+
+API Gateway: so request will first go to api gateway.... which will execute cross-cutting concern... and then api gateway will pass request off to whatever service it was meant to go to... it knows where the service is by asking the naming server / service registry 
+http://localhost:8765/CURRENCY-EXCHANGE/currency-exchange/from/USD/to/INR <- "CURRENCY-EXCHANGE" comes from the name of service in the naming server.... "/currency-exchange/from/USD/to/INR" is an endpoint on that service that you want to hit
+http://localhost:8765/CURRENCY-CONVERSION/currency-conversion/from/USD/to/INR/quantity/10
+http://localhost:8765/CURRENCY-CONVERSION/currency-conversion-feign/from/USD/to/INR/quantity/10
+after adding the lower case ability...
+http://localhost:8765/currency-exchange/currency-exchange/from/USD/to/INR
+http://localhost:8765/currency-conversion/currency-conversion/from/USD/to/INR/quantity/10
+http://localhost:8765/currency-conversion/currency-conversion-feign/from/USD/to/INR/quantity/10
