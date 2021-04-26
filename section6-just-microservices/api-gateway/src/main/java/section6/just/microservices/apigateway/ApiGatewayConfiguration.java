@@ -12,7 +12,7 @@ public class ApiGatewayConfiguration {
 	public RouteLocator gatewayRouter(RouteLocatorBuilder builder) {
 		return builder.routes()
 				.route(p -> p.path("/get") //just an example to show 1. we can specify what requests api gateway will react to (in this case that's requests sent to "/get" 2. we can tell api gateway to add some things to the request before it sends it off to some other service 3. we can tell api gateway to change the location / url that request is being sent to (from "/get" to "http://httpbin.org:80"
-						.filters(f -> f
+						.filters(f -> f //this would be the place to do something that is specific to a particular request.... whereas class that implements GlobalFilter i.e. LoggingFilter.... would be perfect to implement stuff that would apply for every request
 								.addRequestHeader("MyHeader", "MyURI")
 								.addRequestParameter("Param", "MyValue"))
 						.uri("http://httpbin.org:80")
