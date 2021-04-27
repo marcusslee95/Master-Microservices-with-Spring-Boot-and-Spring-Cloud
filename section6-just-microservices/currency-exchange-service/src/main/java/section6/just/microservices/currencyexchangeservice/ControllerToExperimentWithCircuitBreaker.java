@@ -17,7 +17,8 @@ public class ControllerToExperimentWithCircuitBreaker {
 	
 	@GetMapping("/sample-endpoint")
 //	@Retry(name = "default") //just saying... hey if a request to this endpoint fails then try it again a couple times to see if it works.... before sending back an error
-	@Retry(name = "sample-api")
+//	@Retry(name = "sample-api")
+	@Retry(name = "sample-api", fallbackMethod="hardCodedResponse") //if all the retry attempts fail.... just send back return value of this method as response instead.... cuz otherwise we'd just be sending back an error
 	public String sampleEndpoint() {
 		logger.info("Request has been sent to Sample Endpoint");
 		ResponseEntity<String> forEntity = new RestTemplate().getForEntity("http:somenonexistenturl.com", 
@@ -25,5 +26,9 @@ public class ControllerToExperimentWithCircuitBreaker {
 		
 //		return "Sample Endpoint";
 		return forEntity.getBody();
+	}
+	
+	public String hardCodedResponse(Exception ex) {
+		return "fallback-response.... since all the retry attempts failed / resulted in some error";
 	}
 }
