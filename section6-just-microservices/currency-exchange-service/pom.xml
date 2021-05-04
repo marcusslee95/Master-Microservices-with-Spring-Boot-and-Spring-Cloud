@@ -85,9 +85,15 @@
 
 	<build>
 		<plugins>
-			<plugin>
+			<plugin> <!-- plugin used to create docker image of this project -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image> <!-- details of the image you want to create of this project / service -->
+						<name>grindingoutcode/${project.artifactId}:${project.version}</name>	<!-- name of image follows this format: yourDockerAccount/nameYouWantToGiveImage:versionOfImage -->
+					</image>
+					<pullPolicy>IF_NOT_PRESENT</pullPolicy> <!-- saying get the stuff required to create the image only if the stuff isn't already present on local machine... default behavior is to always get the stuff from docker registry... so that's less efficient -->
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
