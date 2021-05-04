@@ -15,6 +15,14 @@ services:
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
 
+  api-gateway:
+    image: grindingoutcode/api-gateway:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8765:8765"
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+
   naming-server:
     image: grindingoutcode/naming-server:0.0.1-SNAPSHOT
     mem_limit: 700m
