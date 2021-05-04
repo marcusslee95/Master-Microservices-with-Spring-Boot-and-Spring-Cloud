@@ -4,3 +4,10 @@ services:
     mem_limit: 700m
     ports:
       - "8000:8000"
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka  #this is necessary for currency-exchange service that runs inside container... to be able to find and register with naming-server in container... even though currency-exchange service specifies in application.properties where naming server is.... it uses "localhost"... unfortunately that localhost will refer to localhost inside docker system... not computer's local host....
+  naming-server:
+    image: grindingoutcode/naming-server:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8761:8761"
