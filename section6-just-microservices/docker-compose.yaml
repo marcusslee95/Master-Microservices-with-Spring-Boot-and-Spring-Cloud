@@ -1,0 +1,6 @@
+services:
+  currency-exchange:
+    image: grindingoutcode/currency-exchange-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8000:8000"
