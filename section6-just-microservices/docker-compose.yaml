@@ -6,6 +6,7 @@ services:
       - "8000:8000" #it's saying run currency-exchange-service in a container... and have that container live on port 8000..
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka  #this is necessary for currency-exchange service that runs inside container... to be able to find and register with naming-server in container... even though currency-exchange service specifies in application.properties where naming server is.... it uses "localhost"... unfortunately that localhost will refer to localhost inside docker system... not computer's local host where the naming server container is....
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411 #ditto as above.... in this line we're telling currency exchange service the right location of zipkin server.... we need to do this because in application.properties of currency-exchange service it says location of zipkin server is on "localhost" but that refers to localhost on docker system... not localhost on computer.... which is where zipkin server actually exists 
 
   currency-conversion: # the "/currency-conversion-feign" endpoint will work.. but not the "/currency-conversion" endpoint... because it tries to send request to currency-exchange-service using "localhost"... so we run into the same issue as ^ where "localhost" is referring to localhost in docker system not localhost in computer where the currency exchange service is... on the other hand the "/currency-conversion-feign" endpoint  works because it uses naming server to locate where currency-exchange service is
     image: grindingoutcode/currency-conversion-service:0.0.1-SNAPSHOT
@@ -14,6 +15,7 @@ services:
       - "8100:8100"
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411
 
   api-gateway:
     image: grindingoutcode/api-gateway:0.0.1-SNAPSHOT
@@ -22,9 +24,19 @@ services:
       - "8765:8765"
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411
 
   naming-server:
     image: grindingoutcode/naming-server:0.0.1-SNAPSHOT
     mem_limit: 700m
     ports:
       - "8761:8761"
+
+# previously we had used this command in the terminal to run the distributed tracing server.... "docker run -p 9411:9411 openzipkin/zipkin:2.23"
+# now we want to do the same thing when we run this yaml file 
+  zipkin-server:
+    image: openzipkin/zipkin:2.23 
+    mem_limit: 300m # can decrease memory you allot for programs that aren't as intense 
+    ports: 
+      - "9411:9411" 
+
