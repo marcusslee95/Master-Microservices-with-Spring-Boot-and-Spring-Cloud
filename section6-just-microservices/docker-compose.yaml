@@ -3,9 +3,18 @@ services:
     image: grindingoutcode/currency-exchange-service:0.0.1-SNAPSHOT
     mem_limit: 700m
     ports:
-      - "8000:8000"
+      - "8000:8000" #it's saying run currency-exchange-service in a container... and have that container live on port 8000..
     environment:
-      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka  #this is necessary for currency-exchange service that runs inside container... to be able to find and register with naming-server in container... even though currency-exchange service specifies in application.properties where naming server is.... it uses "localhost"... unfortunately that localhost will refer to localhost inside docker system... not computer's local host....
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka  #this is necessary for currency-exchange service that runs inside container... to be able to find and register with naming-server in container... even though currency-exchange service specifies in application.properties where naming server is.... it uses "localhost"... unfortunately that localhost will refer to localhost inside docker system... not computer's local host where the naming server container is....
+
+  currency-conversion: # the "/currency-conversion-feign" endpoint will work.. but not the "/currency-conversion" endpoint... because it tries to send request to currency-exchange-service using "localhost"... so we run into the same issue as ^ where "localhost" is referring to localhost in docker system not localhost in computer where the currency exchange service is... on the other hand the "/currency-conversion-feign" endpoint  works because it uses naming server to locate where currency-exchange service is
+    image: grindingoutcode/currency-conversion-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8100:8100"
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+
   naming-server:
     image: grindingoutcode/naming-server:0.0.1-SNAPSHOT
     mem_limit: 700m
